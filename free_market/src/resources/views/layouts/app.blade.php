@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{asset('css/sanitize.css')}}">
+    <link rel="stylesheet" href="{{asset('css/common.css')}}">
+    @yield('css')
+</head>
+<body>
+    <header>
+        <div class="header-box">
+            <div class="header-logo">
+                <!-- ロゴ画像がある場合はここをimgタグに -->
+                 <a href="/"><img src="{{asset('images/COACHTECHヘッダーロゴ.png')}}" alt=""></a>
+            </div>
+
+            @if(Request::is('/'))
+            <div class="search-bar">
+                <input type="text" placeholder="なにをお探しですか？">
+            </div>
+            @endif
+
+            <nav class="header-nav">
+                @if (Auth::check())
+                <form action="/logout" method="post">
+                    @csrf
+                    <button class="btn-logout">ログアウト</button>
+                </form>
+                <a href="#" class="btn-exhibit">出品</a>
+                @elseif(!Auth::check() && Request::is('/'))
+                <a href="/login" class="btn-login">ログイン</a>
+                <a href="#" class="btn-exhibit">出品</a>
+                @endif
+
+            </nav>
+        </div>
+
+                
+        </div>
+    </header>
+    <main>
+        @yield('content')
+    </main>
+</body>
+</html>

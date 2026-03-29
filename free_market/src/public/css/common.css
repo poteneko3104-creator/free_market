@@ -1,0 +1,25 @@
+/* 基本設定 */
+body {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    margin: 0;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* ヘッダー */
+header {
+    background-color: #000;
+    color: #fff;
+    padding: 15px 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.btn-logout{
+    background: none;
+    color:#fff;
+    border: none;
+}
+.header-box{
+    display: flex;
+    justify-content: space-between;
+}

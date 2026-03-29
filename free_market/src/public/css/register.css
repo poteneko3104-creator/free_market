@@ -1,0 +1,77 @@
+/* メインコンテナ */
+.container {
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+.content_box{
+    margin: 0 auto;
+    max-width: 800px;
+}
+.content_title{
+    text-align: center;
+}
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+/* フォーム要素 */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box; /* パディングを含めた幅指定 */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* ボタン */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff5a5f; /* 画像に近い赤色 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.submit-btn:hover {
+    background-color: #e54e53;
+}
+
+/* 下部リンク */
+.login-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-link a {
+    color: #00aaff;
+    text-decoration: none;
+    font-size: 0.85rem; 
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+.alert-text{
+    color:red;
+}
