@@ -22,7 +22,7 @@ class CreateItemsTable extends Migration
             $table->string('brand');
             $table->integer('price');
             $table->string('detail');
-            $table->string('status');
+            $table->string('condition');
             $table->timestamps();
         });
     }

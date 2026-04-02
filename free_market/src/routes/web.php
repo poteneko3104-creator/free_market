@@ -20,6 +20,8 @@ use App\Http\Controllers\ItemController;
 
 
 Route::get('/',[ItemController::class,'index'])->name('index');
+Route::get('/search',[ItemController::class,'search']);
+Route::get('/item/{item}',[ItemController::class,'detail']);
 //Route::post('/register',[RegisteredUserController::class,'store']);
 //Route::post('/login',[AuthenticatedSessionController::class,'store']);
 //Route::post('/logout',[AuthenticatedSessionController::class,'destroy']);

@@ -16,21 +16,25 @@
                  <a href="/"><img src="{{asset('images/COACHTECHヘッダーロゴ.png')}}" alt=""></a>
             </div>
 
-            @if(Request::is('/'))
-            <div class="search-bar">
-                <input type="text" placeholder="なにをお探しですか？">
-            </div>
-            @endif
+
+            <form action="/search">
+                @csrf
+                <div class="search-bar">
+                    <input type="text" name="keyword" placeholder="なにをお探しですか？">
+                    <button type="submit" style="display: none;">送信</button>
+                </div>
+            </form>
+
 
             <nav class="header-nav">
                 @if (Auth::check())
                 <form action="/logout" method="post">
                     @csrf
-                    <button class="btn-logout">ログアウト</button>
+                    <button class="btn-nav">ログアウト</button>
                 </form>
                 <a href="#" class="btn-exhibit">出品</a>
-                @elseif(!Auth::check() && Request::is('/'))
-                <a href="/login" class="btn-login">ログイン</a>
+                @elseif(!Auth::check() && Request::is('/','/detail'))
+                <a href="/login" class="btn-nav">ログイン</a>
                 <a href="#" class="btn-exhibit">出品</a>
                 @endif
 

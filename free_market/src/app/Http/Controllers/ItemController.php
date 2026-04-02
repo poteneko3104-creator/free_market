@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Like;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
@@ -48,7 +49,10 @@ class ItemController extends Controller
         elseif($activeTab === 'mylist'){
             if (Auth::check()){
                 $userId = Auth::id();
-                $items = Like::where('user_id','=',$userId)->get(); 
+                $items = Like::where('user_id','=',$userId)->with('items')->get(); 
+                if(!empty($request->keyword)){
+                    
+                }
 
                 // 2. viewにデータを渡す
                 return view('index', compact('items'));
@@ -57,6 +61,20 @@ class ItemController extends Controller
                 return view('login');
             }
         }
+    }
+    public function search(Request $request)
+        {
+                $keyword = $request->keyword;
+                $query = Item::query();
+                if (!empty($keyword)) {
+                    $query->KeywordSearch($keyword);
+                }
+                $items = $query->get();
+                return view('index', compact('items','keyword'));
+        }
+    public function detail(Item $item){
+                $categories = Category::where('item_id','=',$item->id)->with('category_items')->get();
+                return view('detail',compact('item','categories'));
     }
 
        

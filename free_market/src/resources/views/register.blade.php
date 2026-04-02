@@ -43,7 +43,7 @@
             <button type="submit" class="submit-btn">登録する</button>
         </form>
         <div class="login-link">
-            <a href="#">ログインはこちら</a>
+            <a href="/login">ログインはこちら</a>
         </div>
 </div>
 

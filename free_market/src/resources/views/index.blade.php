@@ -8,15 +8,20 @@
 @section('content')
 
 <div class="tabs">
-    <a href="#" class="tab-item">おすすめ</a>
-    <a href="{{ route('index', ['tab' => 'mylist']) }}" class="tab-item">マイリスト</a>
+    <a href="{{ route('index', ['tab' => 'index','keyword' => $keyword ?? null]) }}" class="tab-item">おすすめ</a>
+    <a href="{{ route('index', ['tab' => 'mylist','keyword' => $keyword ?? null]) }}" class="tab-item">マイリスト</a>
 </div>
 <div class="container">
-
+        <div class="product-grid">
             @foreach($items as $item)
             <div class="product-card">
-                <img class="product-image" src="{{$items->pic}}" alt="">
-                <p class="product-name">{{$items->name}}</p>
+                @if(!empty($item->pic))
+                <img class="product-image" src="{{$item->pic}}" alt="">
+                @endif
+                @if($item->sold==true)
+                    <span class="sold-tag">sold</span>
+                @endif
+                <a href="/item/{{$item->id}}"><p class="product-name">{{$item->name}}</p></a>
             </div>
             @endforeach
         </div>

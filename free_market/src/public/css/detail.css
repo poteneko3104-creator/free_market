@@ -1,0 +1,130 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* レイアウト */
+.product-layout {
+    display: flex;
+    gap: 60px;
+}
+
+.product-image {
+    flex: 1;
+    background-color: #e0e0e0;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.product-details {
+    flex: 1;
+}
+
+/* 商品詳細テキスト */
+.product-title {
+    font-size: 24px;
+    margin: 0 0 5px 0;
+}
+
+.brand-name {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.price span {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* ボタン */
+.btn-purchase, .btn-submit {
+    display: block;
+    width: 100%;
+    background-color: #ff4d4d;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+/* セクション設定 */
+.section {
+    margin-top: 40px;
+}
+
+.section-title {
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* タグと情報 */
+.info-row {
+    margin-bottom: 10px;
+}
+
+.info-label {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+}
+
+.tag {
+    background-color: #e0e0e0;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+/* コメント */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-content {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.comment-input {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
