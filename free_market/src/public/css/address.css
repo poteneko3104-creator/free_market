@@ -1,0 +1,56 @@
+/* レイアウト調整 (住所変更用) */
+.container-small {
+    max-width: 600px; /* フォームの横幅を絞る */
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* フォームのデザイン */
+.address-form {
+    text-align: left; /* ラベルと入力欄は左揃え */
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* paddingを含めたサイズ計算 */
+}
+
+/* 更新ボタン */
+.btn-update {
+    width: 100%;
+    background-color: #ff5a5f; /* 画像に近い赤色 */
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: opacity 0.2s;
+}
+
+.btn-update:hover {
+    opacity: 0.8;
+}

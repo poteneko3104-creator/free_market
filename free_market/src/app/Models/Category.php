@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-        public function category_items(){
-        return $this->belongsTo('App\Models\Category_Item');
+        public function categoryMaster(){
+        return $this->belongsTo('App\Models\CategoryMaster');
     }
 }

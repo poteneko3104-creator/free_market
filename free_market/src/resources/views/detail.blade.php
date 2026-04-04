@@ -15,7 +15,9 @@
                 <img src="{{$item->pic}}" alt="画像がありません">
                 @endif
             </div>
+            <!--'coments','comentsCount','likesCount','like'-->
 
+           
             <!-- 右側：商品情報 -->
             <div class="product-details">
                 <h1 class="product-title">{{$item->name}}</h1>
@@ -23,11 +25,18 @@
                 <div class="price">¥{{$item->price}} <span>(税込)</span></div>
                 
                 <div class="stats">
-                    <div class="stat-item">♡ <span>3</span></div>
-                    <div class="stat-item">💬 <span>1</span></div>
+
+                        <div class="stat-item">
+                            @if(!empty($like->status) && $like->status==true)                
+                                <a href="/likes_unchecked/{{$item->id}}"><img src="{{asset('images/ハートロゴ_ピンク.png')}}" alt=""></a>                        
+                            @else
+                                <a href="/likes_checked/{{$item->id}}"><img src="{{asset('images/ハートロゴ_デフォルト.png')}}" alt=""></a>
+                            @endif
+                            <span>{{$likesCount}}</span></div>
+                        <div class="stat-item"><img src="{{asset('images/ふきだしロゴ.png')}}" alt=""> <span>{{$comentsCount}}</span></div>
                 </div>
 
-                <a href="#" class="btn-purchase">購入手続きへ</a>
+                <a href="/purchase/{{$item->id}}" class="btn-purchase">購入手続きへ</a>
 
                 <section class="section">
                     <h2 class="section-title">商品説明</h2>
@@ -37,15 +46,12 @@
                 <section class="section">
                     <h2 class="section-title">商品の情報</h2>
                     <div class="info-row">
-                        <span class="info-label">カテゴリー</span>
-                        
+                        <span class="info-label">カテゴリー</span>                        
                         @foreach($categories as $category)
-                        @if(!empty($category->category_items->content))
-                        <span class="tag">{{$category->category_items->content}}</span>
+                        @if(!empty($category->categoryMaster->content))
+                        <span class="tag">{{$category->categoryMaster->content}}</span>
                         @endif
                         @endforeach
-                        <!--<span class="tag">洋服</span>-->
-                        <!--<span class="tag">メンズ</span>-->
                     </div>
                     <div class="info-row">
                         <span class="info-label">商品の状態</span>
@@ -54,22 +60,34 @@
                 </section>
 
                 <section class="section">
-                    <h2 class="section-title">コメント (1)</h2>
+                    <h2 class="section-title">コメント ({{$comentsCount}})</h2>
                     <div class="comment">
+                        @foreach($coments as $coment)
                         <div class="user-info">
-                            <div class="user-icon"></div>
-                            <span class="user-name">admin</span>
+                            <div class="user-icon">
+                                <img src="{{$coment->user?->pic}}" alt="">
+                            </div>
+                            <span class="user-name">{{$coment->user?->name}}</span>
                         </div>
                         <div class="comment-content">
-                            こちらにコメントが入ります。
+                            {{$coment->content}}
                         </div>
+                        @endforeach
+
                     </div>
                 </section>
 
                 <section class="section">
                     <h2 class="section-title">商品へのコメント</h2>
-                    <textarea class="comment-input"></textarea>
+                    <form action="/coment_register" method="post">
+                        @csrf
+                    <input type="hidden" name="itemId" value="{{$item->id}}">
+                    <textarea class="comment-input" name="content" value="{{old('content')}}"></textarea>
+                    @if($errors->any('content'))
+                        <span class="alert-text">{{$errors->first('content')}}</span>
+                     @endif
                     <button class="btn-submit">コメントを送信する</button>
+                    </form>
                 </section>
             </div>
         </div>

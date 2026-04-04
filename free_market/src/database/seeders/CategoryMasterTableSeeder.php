@@ -18,18 +18,18 @@ class CategoryMasterTableSeeder extends Seeder
         $param = [
             'content' => '日用品',
         ];
-        DB::table('categorymaster')->insert($param);
+        DB::table('category_masters')->insert($param);
         $param = [
             'content' => '化粧品',
         ];
-        DB::table('categorymaster')->insert($param);
+        DB::table('category_masters')->insert($param);
             $param = [
             'content' => '洋服',
         ];
-        DB::table('categorymaster')->insert($param);
+        DB::table('category_masters')->insert($param);
         $param = [
             'content' => 'メンズ',
         ];
-        DB::table('categorymaster')->insert($param);
+        DB::table('category_masters')->insert($param);
     }
 }

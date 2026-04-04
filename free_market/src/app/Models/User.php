@@ -44,4 +44,8 @@ class User extends Authenticatable
     public function User(){
         return $this -> hasOne('App\Models\User','id');
     }
+    public function Likes() {
+       return $this->belongsToMany(Like::class, 'likes');
+    }
+
 }
