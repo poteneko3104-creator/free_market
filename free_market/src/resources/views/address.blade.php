@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+<title>住所更新</title>
+@endsection
+
 @section('css')
 <link rel="stylesheet" href="{{asset('css/address.css')}}">
 @endsection

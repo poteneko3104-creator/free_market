@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+<title>購入</title>
+@endsection
+
 @section('css')
 <link rel="stylesheet" href="{{asset('css/purchase.css')}}">
 @endsection
@@ -23,9 +27,9 @@
 
                 <div class="payment-method">
                     <h3>支払い方法</h3>
-                    <select class="custom-select">
-                        <option value="convenience">コンビニ払い</option>
-                        <option value="card">カード支払い</option>
+                    <select class="custom-select" id="purcase_method">
+                        <option value="コンビニ払い">コンビニ払い</option>
+                        <option value="カード支払い">カード支払い</option>
                     </select>
                 </div>
 
@@ -56,13 +60,22 @@
                     </div>
                     <div class="summary-row">
                         <span>支払い方法</span>
-                        <span>コンビニ払い</span>
+                        <span id = "result"></span>
                     </div>
                 </div>
                 <button class="btn-purchase">購入する</button>
             </aside>
 
         </div>
+        <script>
+            const select = document.getElementById('purcase_method');
+            const result = document.getElementById('result');
+
+            select.addEventListener('change', (event) => {
+
+                result.textContent = event.target.value;
+            });
+        </script>
 </div>
 
 @endsection

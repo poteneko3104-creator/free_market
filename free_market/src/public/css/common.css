@@ -44,10 +44,12 @@ header {
     margin-right: 10px;
     background: none;
     border: none;
+    cursor: pointer;
 }
 .btn-exhibit {
     background-color: #fff;
     color: #333;
     padding: 8px 20px;
     border-radius: 4px;
+    text-decoration: none;
 }

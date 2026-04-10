@@ -22,8 +22,10 @@ use App\Http\Controllers\ItemController;
 Route::get('/',[ItemController::class,'index'])->name('index');
 Route::get('/search',[ItemController::class,'search']);
 Route::get('/item/{item}',[ItemController::class,'detail'])->name('detail');
-Route::get('/edit',[ItemController::class,'edit'])->name('edit');
 Route::get('/likes_unchecked/{item}',[ItemController::class,'likeUnchecked']);
+Route::get('/sell',[ItemController::class,'sell']);
+Route::post('/sell',[ItemController::class,'sell']);
+
 
 //Route::post('/register',[RegisteredUserController::class,'store']);
 //Route::post('/login',[AuthenticatedSessionController::class,'store']);
@@ -31,6 +33,9 @@ Route::get('/likes_unchecked/{item}',[ItemController::class,'likeUnchecked']);
 //Route::get('/register', [UserController::class,'register']);
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage',[ItemController::class,'mypage'])->name('mypage');
+    Route::get('/mypage/profile',[ItemController::class,'editProfile']);
+    Route::post('/mypage/profile',[ItemController::class,'updateProfile']);
     Route::get('/likes_checked/{item}',[ItemController::class,'likeChecked']);
     Route::post('/coment_register',[ItemController::class,'comentRegister']);
     Route::get('/purchase/{item}',[ItemController::class,'purchase']);

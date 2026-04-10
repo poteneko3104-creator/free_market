@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    @yield('title')
     <link rel="stylesheet" href="{{asset('css/sanitize.css')}}">
     <link rel="stylesheet" href="{{asset('css/common.css')}}">
     @yield('css')
@@ -32,17 +32,14 @@
                     @csrf
                     <button class="btn-nav">ログアウト</button>
                 </form>
-                <a href="#" class="btn-exhibit">出品</a>
+                <button type="button" class="btn-nav" onclick="location.href='/mypage'">マイページ</button>
+                <a href="sell" class="btn-exhibit">出品</a>
                 @elseif(!Auth::check() && Request::is('/','/detail'))
                 <a href="/login" class="btn-nav">ログイン</a>
-                <a href="#" class="btn-exhibit">出品</a>
+                <a href="sell" class="btn-exhibit">出品</a>
                 @endif
-
             </nav>
-        </div>
-
-                
-        </div>
+        </div>                
     </header>
     <main>
         @yield('content')

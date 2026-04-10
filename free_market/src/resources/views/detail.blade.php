@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+<title>商品詳細</title>
+@endsection
+
 @section('css')
 <link rel="stylesheet" href="{{asset('css/detail.css')}}">
 @endsection

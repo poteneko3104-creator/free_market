@@ -8,6 +8,8 @@ use App\Models\Like;
 use App\Models\Category;
 use App\Models\Coment;
 use App\Models\User;
+use App\Models\Cart;
+use App\Models\CategoryMaster;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ComentRequest;
 
@@ -31,7 +33,7 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
-        // パラメーター 'tab' を取得
+        // パラメーター 'tab' を取得、デフォルトは'index'
         $activeTab = $request->query('tab', 'index');
 
         $items = [];
@@ -51,11 +53,13 @@ class ItemController extends Controller
         elseif($activeTab === 'mylist'){
             if (Auth::check()){
                 $userId = Auth::id();
-                $items = Like::where('user_id','=',$userId)->with('items')->get(); 
+                //$items = Like::where('user_id',$userId)->with('items')->get(); 
+                $items = Item::whereHas('likes', function ($query) use ($userId) {
+                    $query->where('user_id', $userId)->where('status',true);
+                })->get();
                 if(!empty($request->keyword)){
                     $items = $items->KeywordSearch($keyword);
                 }
-
                 return view('index', compact('items'));
             }
             else{
@@ -133,9 +137,7 @@ class ItemController extends Controller
     public function address(Item $item){
         return view('address',compact('item'));
     }
-    public function edit(){
-        return view('edit');
-    }
+    
     public function purchase(Item $item){
         $user = User::where('id','=',Auth::id())->first();
         return view('purchase',compact('item','user'));
@@ -151,6 +153,60 @@ class ItemController extends Controller
 
         return view('purchase',compact('item','user'));
     }
+    //プロフィール画面を表示する。
+    public function mypage(Request $request){
+        $activeTab = $request->query('tab', 'sold');
+        $items = [];
+        if($activeTab == 'sold'){
+            $items = Item::where('user_id',Auth::id())->get();
+        }
+        elseif($activeTab == 'bought'){
+            /*
+            $items = Cart::where('user_id',Auth::id())
+                ->whereHas('item', function ($query) {  
+                $query->where('sold', true);
+                })
+            ->get();
+            */
 
-       
+            $items = Item::whereHas('carts', function ($query){
+                    $query->where('user_id',Auth::id());
+                })->where('sold', true)->get();
+        }
+        $user = User::where('id',Auth::id())->first();
+        return view('mypage',compact('user','items'));
+    }
+    //プロフィール編集
+    public function editProfile(){
+        $user = User::where('id',Auth::id())->first();
+        return view('edit',compact('user'));
+    }
+    //プロフィール更新
+    public function updateProfile(Request $request){
+        $data = $request->only(['name','post_code','address','building']);
+        if($request->hasFile('image')){
+                    // ファイルを保存（storage/app/public/images フォルダに保存される）
+                    // store() の戻り値は保存先のファイルパス
+                    $path = $request->file('image')->store('images', 'public');
+                    $data['profile_pic'] = $path;
+        }
+        User::find(Auth::id())->update($data);
+        return redirect('mypage');
+    }
+    //商品出品画面表示
+    public function sell(){
+        $categories = CategoryMaster::all();
+        return view('sell',compact('categories'));
+    }
+    //商品登録
+    public function registerSell(Request $request){
+        $data = $request->only(['name','brand','price','detail','condition']);
+        $data['user_id'] = Auth::id();
+        if($request->hasFile('image')){
+            $path = $request->file('image')->store('images', 'public');
+            $data['pic'] = $path;            
+        }
+        User::create($data);
+
+    }   
 }
