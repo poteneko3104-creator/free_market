@@ -29,15 +29,28 @@
 }
 
 /* 画像アップロード */
+.image-upload-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 常に中央に配置 */
+    width: 100%;
+}
+
 .upload-box {
+    width: 100%; /* 親の幅に合わせる */
     border: 1px dashed #ccc;
     padding: 60px;
     display: flex;
     justify-content: center;
+    align-items: center;
     border-radius: 4px;
+    height: 250px;
+    box-sizing: border-box;
 }
-
 .btn-outline-red {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border: 1px solid #ff5a5f;
     color: #ff5a5f;
     padding: 8px 20px;
@@ -46,6 +59,8 @@
     font-size: 14px;
 }
 
+
+
 /* カテゴリータグ */
 .tag-container {
     display: flex;
@@ -53,13 +68,20 @@
     gap: 10px;
 }
 
-.tag {
+.tag-container label {
     border: 1px solid #ff5a5f;
     color: #ff5a5f;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 12px;
     cursor: pointer;
+}
+.cat-check{
+    display: none;
+}
+.cat-check:checked + label{
+    background-color: #ff5a5f;
+    color: #fff;
 }
 
 .tag.selected {
@@ -140,4 +162,7 @@ select.form-input {
 
 .btn-submit:hover {
     opacity: 0.9;
+}
+.alert-text{
+    color: red;
 }

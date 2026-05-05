@@ -10,7 +10,7 @@ class RegisterResponse implements RegisterResponseContract
     public function toResponse($request)
     {
         // プロフィール設定画面のパスやルート名を指定
-        return redirect()->route('edit'); 
+        return redirect()->route('editProfile'); 
     }
         
 }

@@ -18,6 +18,11 @@
     align-items: center;
     justify-content: center;
     font-size: 24px;
+    height: 30%;
+    width: 40%;
+}
+.product-image img{
+    width:100%;
 }
 
 .product-details {
@@ -40,11 +45,13 @@
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 10px;
+    display: inline-block;
 }
 
-.price span {
+.include-tax {
     font-size: 14px;
     font-weight: normal;
+    display: inline-block;
 }
 
 .stats {
@@ -131,4 +138,10 @@
 
 .alert-text{
     color: red;
+}
+@media screen and (max-width: 850px){
+    .product-layout {
+        display: inline;
+    }
+    
 }

@@ -20,7 +20,7 @@
             @foreach($items as $item)
             <div class="product-card">
                 @if(!empty($item->pic))
-                <img class="product-image" src="{{$item->pic}}" alt="">
+                <img class="product-image" src="{{ $item->pic ? asset('storage/' . $item->pic) : asset('images/default-icon.png') }}" alt="">
                 @endif
                 @if($item->sold==true)
                     <span class="sold-tag">sold</span>

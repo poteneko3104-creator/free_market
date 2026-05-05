@@ -35,14 +35,20 @@
     font-size: 0.8rem;
 }
 
-.product-name {
+.product-name-input {
     font-size: 1.2rem;
     font-weight: bold;
     margin: 0 0 10px 0;
+    border:none;
+    display: block;
+    pointer-events: none;
 }
 
-.product-price {
+.product-price-input {
     font-size: 1.1rem;
+    border:none;
+    display: block;
+    pointer-events: none;
 }
 
 
@@ -109,4 +115,15 @@ h3 {
     font-weight: bold;
     border-radius: 4px;
     cursor: pointer;
+}
+.address-input{
+    border: none;
+    display: block;
+    margin-bottom: 5px;
+    pointer-events: none;
+}
+@media screen and (max-width: 850px){
+    .checkout-layout {
+        display:inline;
+    }
 }

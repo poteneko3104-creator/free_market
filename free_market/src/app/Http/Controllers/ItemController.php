@@ -12,6 +12,8 @@ use App\Models\Cart;
 use App\Models\CategoryMaster;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ComentRequest;
+use App\Http\Requests\SellRequest;
+use App\Http\Requests\PurchaseRequest;
 
 class ItemController extends Controller
 {
@@ -29,7 +31,7 @@ class ItemController extends Controller
         return view('index',['items' => $items]);
     }
         */
-    // ItemController.php などの該当箇所
+    // 
 
     public function index(Request $request)
     {
@@ -40,8 +42,7 @@ class ItemController extends Controller
         // デフォルトの時
          if($activeTab === 'index'){
             if (Auth::check()){
-                $userId = Auth::id();
-                $items = Item::where('user_id', '!=', $userId)->get();
+                $items = Item::where('user_id', '!=', Auth::id())->get();
             }
             else{
             $items = Item::all();
@@ -53,13 +54,28 @@ class ItemController extends Controller
         elseif($activeTab === 'mylist'){
             if (Auth::check()){
                 $userId = Auth::id();
+                /*
                 //$items = Like::where('user_id',$userId)->with('items')->get(); 
-                $items = Item::whereHas('likes', function ($query) use ($userId) {
+                $query = Item::whereHas('likes', function ($query) use ($userId) {
                     $query->where('user_id', $userId)->where('status',true);
-                })->get();
+                });
                 if(!empty($request->keyword)){
+                    $keyword = $request->keyword;
                     $items = $items->KeywordSearch($keyword);
                 }
+                */
+                // 1. まずクエリのベースを作成（まだ get() しない）
+                $query = Item::whereHas('likes', function ($q) use ($userId) {
+                    $q->where('user_id', $userId)->where('status', true);
+                });
+
+                // 2. キーワードがあればクエリを追加
+                if (!empty($request->keyword)) {
+                    $query->KeywordSearch($request->keyword);
+                }
+
+                // 3. 最後に実行して結果を取得
+                $items = $query->get();
                 return view('index', compact('items'));
             }
             else{
@@ -169,7 +185,7 @@ class ItemController extends Controller
             ->get();
             */
 
-            $items = Item::whereHas('carts', function ($query){
+            $items = Item::whereHas('purchases', function ($query){
                     $query->where('user_id',Auth::id());
                 })->where('sold', true)->get();
         }
@@ -199,14 +215,83 @@ class ItemController extends Controller
         return view('sell',compact('categories'));
     }
     //商品登録
+    /*
     public function registerSell(Request $request){
         $data = $request->only(['name','brand','price','detail','condition']);
         $data['user_id'] = Auth::id();
+        $data['sold'] = false;
         if($request->hasFile('image')){
             $path = $request->file('image')->store('images', 'public');
             $data['pic'] = $path;            
         }
-        User::create($data);
+        Item::create($data);
+        $id = $data->id;
+        $data = null;
+        $categories =  $request->input('categories'); 
+        foreach($categories as $category){
+            $data['item_id']= $id;
+            $data['category_master_id']= $category;
+        }
 
-    }   
+        return redirect('index');
+
+    }
+    */
+    public function registerSell(SellRequest $request) {
+        // 1. 基本データの整理
+        $data = $request->only(['name', 'brand', 'price', 'detail', 'condition']);
+        $data['user_id'] = Auth::id();
+        $data['sold'] = false;
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $data['pic'] = $path;
+        }
+
+        // 2. 保存して、生成されたインスタンスを受け取る
+        $item = Item::create($data); 
+
+        // 3. カテゴリの紐付け（多対多のリレーションがある場合）
+        if ($request->has('categories')) {
+            // sync または attach を使うのが Laravel流で一番楽です
+            $item->categories()->attach($request->input('categories'));
+        }
+
+        return redirect('/');
+    }
+    //決済実行（stripeへアクセス）  
+    public function sendStripe(PurchaseRequest $request, Item $item)
+    {
+        $stripe = new StripeClient(config('stripe.secret'));
+
+        $payment_types = ($request->purcase_method == 'コンビニ払い') ? ['konbini'] : ['card'];
+
+        $checkout = $stripe->checkout->sessions->create([
+            'payment_method_types' => $payment_types,
+
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'unit_amount' => $request->price,
+                    'product_data' => [
+                        'name' => $request->name,
+                    ],
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('purchase.success'),
+            'cancel_url' => route('purchase.cancel'),
+        ]);
+        
+        $record = $request ->only(['post_code','address','building','purcase_method']);
+        $record['item_id'] = $item->id;
+        $record['user_id'] = Auth::id();
+        Purchase::create($record);
+        Item::where('id', $request->id)->update(['sold' => true]);
+
+        return redirect($checkout->url);
+    } 
 }
+
+

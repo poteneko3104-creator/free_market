@@ -16,17 +16,17 @@
             <!-- 左側：商品画像 -->
             <div class="product-image">
                 @if(!empty($item->pic))
-                <img src="{{$item->pic}}" alt="画像がありません">
+                <img src="{{ $item->pic ? asset('storage/' . $item->pic) : asset('images/default-icon.png') }}" alt="画像がありません">
                 @endif
             </div>
-            <!--'coments','comentsCount','likesCount','like'-->
 
            
             <!-- 右側：商品情報 -->
             <div class="product-details">
                 <h1 class="product-title">{{$item->name}}</h1>
                 <p class="brand-name">{{$item->brand}}</p>
-                <div class="price">¥{{$item->price}} <span>(税込)</span></div>
+                <div class="price" id="price">{{$item->price}}</div>
+                <div class="include-tax">(税込)</div>
                 
                 <div class="stats">
 
@@ -96,5 +96,11 @@
             </div>
         </div>
 </div>
+
+<script>
+  const priceElement = document.getElementById('price');
+  const price = priceElement.innerText;
+  priceElement.innerText = '¥' + Number(price).toLocaleString();
+</script>
 
 @endsection

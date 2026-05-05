@@ -15,6 +15,11 @@ fortifyインストール
 composer require laravel/fortify
 php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 
+stripe実装
+composer require stripe/stripe-php
+
+
+
 ## 使用技術(実行環境)
  nginx:1.21.1
  mysql 8.0.26

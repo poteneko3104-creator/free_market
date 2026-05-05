@@ -75,3 +75,8 @@ input {
 .alert-text{
     color:red;
 }
+@media screen and (max-width: 850px){
+    .content_box {
+        padding: 10px;
+    }
+}
