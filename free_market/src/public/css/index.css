@@ -60,3 +60,8 @@
     padding: 3px;
     border-radius: 3px;
 }
+@media screen and (max-width: 850px){
+.product-card {
+    width: calc(50% - 15px);
+}
+}

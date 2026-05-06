@@ -12,13 +12,13 @@
 @section('content')
 
 <div class="container">
-    <h2 class="page-title">商品の出品</h2>
+    <h1 class="page-title">商品の出品</h1>
 
     <form action="/sell" method="POST" enctype="multipart/form-data">
         @csrf
         <!-- 商品画像セクション -->
         <section class="form-section">
-            <h3 class="section-label">商品画像</h3>
+            <h2 class="section-label">商品画像</h2>
             
             <div class="image-upload-wrapper">
                 <div class="upload-box" id="upload-container">
@@ -47,7 +47,7 @@
                 @endif
         <!-- 商品の詳細セクション -->
         <section class="form-section">
-            <h3 class="section-title">商品の詳細</h3>
+            <h2 class="section-title">商品の詳細</h2>
             
             <div class="form-group">
                 <label class="item-label">カテゴリー</label>
@@ -89,7 +89,7 @@
 
         <!-- 商品名と説明セクション -->
         <section class="form-section">
-            <h3 class="section-title">商品名と説明</h3>
+            <h2 class="section-title">商品名と説明</h2>
             
             <div class="form-group">
                 <label class="item-label">商品名</label>

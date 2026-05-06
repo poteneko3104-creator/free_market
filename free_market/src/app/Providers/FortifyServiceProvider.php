@@ -73,7 +73,10 @@ class FortifyServiceProvider extends ServiceProvider
 
              return Limit::perMinute(10)->by($email . $request->ip());
          });
-
+           // Tell Fortify which view to return for the email verification notice
+          Fortify::verifyEmailView(function () {
+                 return view('auth.verify-email'); // Ensure this blade file exists!
+         });
        
     }
 

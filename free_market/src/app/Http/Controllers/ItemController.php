@@ -10,27 +10,17 @@ use App\Models\Coment;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\CategoryMaster;
+use App\Models\Purchase;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ComentRequest;
 use App\Http\Requests\SellRequest;
 use App\Http\Requests\PurchaseRequest;
+use Stripe\StripeClient;
 
 class ItemController extends Controller
 {
     // 
-    /* 
-    public function index(){
 
-        if (Auth::check()){
-            $userId = Auth::id();
-            $items = Item::where('user_id', '!=', $userId)->get();
-        }
-        else{
-        $items = Item::all();
-        }        
-        return view('index',['items' => $items]);
-    }
-        */
     // 
 
     public function index(Request $request)
@@ -54,16 +44,6 @@ class ItemController extends Controller
         elseif($activeTab === 'mylist'){
             if (Auth::check()){
                 $userId = Auth::id();
-                /*
-                //$items = Like::where('user_id',$userId)->with('items')->get(); 
-                $query = Item::whereHas('likes', function ($query) use ($userId) {
-                    $query->where('user_id', $userId)->where('status',true);
-                });
-                if(!empty($request->keyword)){
-                    $keyword = $request->keyword;
-                    $items = $items->KeywordSearch($keyword);
-                }
-                */
                 // 1. まずクエリのベースを作成（まだ get() しない）
                 $query = Item::whereHas('likes', function ($q) use ($userId) {
                     $q->where('user_id', $userId)->where('status', true);
@@ -128,7 +108,6 @@ class ItemController extends Controller
                 'user_id' => Auth::id(),
                 'item_id' => $item->id,
             ],
-            // 見つからなかった場合に新規登録する際、追加で保存したいデータ（任意）
             [
                 'status' =>'1',
             ]
@@ -177,14 +156,6 @@ class ItemController extends Controller
             $items = Item::where('user_id',Auth::id())->get();
         }
         elseif($activeTab == 'bought'){
-            /*
-            $items = Cart::where('user_id',Auth::id())
-                ->whereHas('item', function ($query) {  
-                $query->where('sold', true);
-                })
-            ->get();
-            */
-
             $items = Item::whereHas('purchases', function ($query){
                     $query->where('user_id',Auth::id());
                 })->where('sold', true)->get();
@@ -215,28 +186,6 @@ class ItemController extends Controller
         return view('sell',compact('categories'));
     }
     //商品登録
-    /*
-    public function registerSell(Request $request){
-        $data = $request->only(['name','brand','price','detail','condition']);
-        $data['user_id'] = Auth::id();
-        $data['sold'] = false;
-        if($request->hasFile('image')){
-            $path = $request->file('image')->store('images', 'public');
-            $data['pic'] = $path;            
-        }
-        Item::create($data);
-        $id = $data->id;
-        $data = null;
-        $categories =  $request->input('categories'); 
-        foreach($categories as $category){
-            $data['item_id']= $id;
-            $data['category_master_id']= $category;
-        }
-
-        return redirect('index');
-
-    }
-    */
     public function registerSell(SellRequest $request) {
         // 1. 基本データの整理
         $data = $request->only(['name', 'brand', 'price', 'detail', 'condition']);
@@ -266,13 +215,14 @@ class ItemController extends Controller
 
         $payment_types = ($request->purcase_method == 'コンビニ払い') ? ['konbini'] : ['card'];
 
-        $checkout = $stripe->checkout->sessions->create([
-            'payment_method_types' => $payment_types,
+        // 数字以外（¥やカンマ、スペース）を削除して数値に変換
+        $amount = (int) preg_replace('/[^0-9]/', '', $request->price);
 
+        $checkout = $stripe->checkout->sessions->create([
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'jpy',
-                    'unit_amount' => $request->price,
+                    'unit_amount' => $amount, // 数値のみを渡す
                     'product_data' => [
                         'name' => $request->name,
                     ],
@@ -281,17 +231,28 @@ class ItemController extends Controller
             ]],
             'mode' => 'payment',
             'success_url' => route('purchase.success'),
-            'cancel_url' => route('purchase.cancel'),
+            'cancel_url' => route('purchase.cancel', ['item' => $item->id]), 
         ]);
         
         $record = $request ->only(['post_code','address','building','purcase_method']);
         $record['item_id'] = $item->id;
         $record['user_id'] = Auth::id();
         Purchase::create($record);
-        Item::where('id', $request->id)->update(['sold' => true]);
-
+        Item::where('id', $item->id)->update(['sold' => true]);        
         return redirect($checkout->url);
     } 
+    // 決済成功画面を表示
+    public function success()
+    {
+        return view('success'); 
+    }
+
+    // キャンセル時：商品詳細か購入画面に戻す
+    public function cancel(Item $item)
+    {
+        return redirect()->route('detail', ['item' => $item->id])
+                        ->with('error', '決済がキャンセルされました');
+    }
 }
 
 

@@ -39,8 +39,10 @@
                             <span>{{$likesCount}}</span></div>
                         <div class="stat-item"><img src="{{asset('images/ふきだしロゴ.png')}}" alt=""> <span>{{$comentsCount}}</span></div>
                 </div>
-
-                <a href="/purchase/{{$item->id}}" class="btn-purchase">購入手続きへ</a>
+                
+                @if($item->sold==false)
+                    <a href="/purchase/{{$item->id}}" class="btn-purchase">購入手続きへ</a>
+                @endif
 
                 <section class="section">
                     <h2 class="section-title">商品説明</h2>
@@ -69,7 +71,8 @@
                         @foreach($coments as $coment)
                         <div class="user-info">
                             <div class="user-icon">
-                                <img src="{{$coment->user?->pic}}" alt="">
+                                <img src="{{ $coment->user?->profile_pic ? asset('storage/' . $coment->user?->profile_pic) : asset('images/default-icon.png') }}" alt="">
+                                <!--<img src="{{$coment->user?->pic}}" alt="">-->
                             </div>
                             <span class="user-name">{{$coment->user?->name}}</span>
                         </div>

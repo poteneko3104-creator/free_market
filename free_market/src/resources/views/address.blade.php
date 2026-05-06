@@ -11,7 +11,7 @@
 
 @section('content')
     <main class="container-small">
-        <h2 class="page-title">住所の変更</h2>
+        <h1 class="page-title">住所の変更</h1>
 
         <form class="address-form" action="/purchase/address/{{$item->id}}" method="post">
             @csrf

@@ -24,7 +24,7 @@
                 <form action="/search">
                     @csrf
                     <div class="search-bar">
-                        <input type="text" name="keyword" placeholder="なにをお探しですか？">
+                        <input type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ $keyword ?? '' }}">
                         <button type="submit" style="display: none;">送信</button>
                     </div>
                 </form>

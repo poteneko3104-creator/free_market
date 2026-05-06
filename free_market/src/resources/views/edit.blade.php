@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="container">
-    <h2 class="page-title">プロフィール設定</h2>
+    <h1 class="page-title">プロフィール設定</h1>
     
     <form action="/mypage/profile" class="profile-form" method="post" enctype="multipart/form-data">
         @csrf

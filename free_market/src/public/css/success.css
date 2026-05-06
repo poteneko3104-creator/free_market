@@ -1,0 +1,14 @@
+.success-txt{
+    text-align: center;
+}
+.return-btn{
+    width: 300px;
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}

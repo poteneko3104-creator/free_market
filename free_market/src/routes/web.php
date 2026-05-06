@@ -22,20 +22,14 @@ use App\Http\Controllers\ItemController;
 Route::get('/',[ItemController::class,'index'])->name('index');
 Route::get('/search',[ItemController::class,'search']);
 Route::get('/item/{item}',[ItemController::class,'detail'])->name('detail');
-Route::get('/likes_unchecked/{item}',[ItemController::class,'likeUnchecked']);
 
 
-
-//Route::post('/register',[RegisteredUserController::class,'store']);
-//Route::post('/login',[AuthenticatedSessionController::class,'store']);
-//Route::post('/logout',[AuthenticatedSessionController::class,'destroy']);
-//Route::get('/register', [UserController::class,'register']);
-
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     Route::get('/mypage',[ItemController::class,'mypage'])->name('mypage');
     Route::get('/mypage/profile',[ItemController::class,'editProfile'])->name('editProfile');
     Route::post('/mypage/profile',[ItemController::class,'updateProfile']);
     Route::get('/likes_checked/{item}',[ItemController::class,'likeChecked']);
+    Route::get('/likes_unchecked/{item}',[ItemController::class,'likeUnchecked']);
     Route::post('/coment_register',[ItemController::class,'comentRegister']);
     Route::get('/purchase/{item}',[ItemController::class,'purchase']);
     Route::post('/purchase/{item}',[ItemController::class,'sendStripe']);     
@@ -43,5 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/purchase/address/{item}',[ItemController::class,'returnAddress']);
     Route::get('/sell',[ItemController::class,'sell']);
     Route::post('/sell',[ItemController::class,'registerSell']);
+    Route::get('/purchase/success', [ItemController::class, 'success'])->name('purchase.success');
+    Route::get('/purchase/cancel/{item}', [ItemController::class, 'cancel'])->name('purchase.cancel');
     //Route::get('/?tab=mylist',[ItemController::class,'mylist'])->name('mylist');
 });

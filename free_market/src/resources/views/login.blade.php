@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="login-container">
-     <h2>ログイン</h2>
+     <h1>ログイン</h1>
         <form action="/login" method="post">
             @csrf
             <div class="form-group">
