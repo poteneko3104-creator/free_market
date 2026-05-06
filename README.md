@@ -31,11 +31,13 @@ Laravel環境構築
         php artisan db:seed
 
 fortifyインストール
-1. composer require laravel/fortify
-2. php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
+1. docker-compose exec php bash
+2. composer require laravel/fortify
+3. php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 
 stripe実装
-1. composer require stripe/stripe-php
+1. docker-compose exec php bash
+2. composer require stripe/stripe-php
 
 Mailhogの実装
 1 .envに以下の環境変数を追加
@@ -47,6 +49,10 @@ Mailhogの実装
         MAIL_PASSWORD=null
         MAIL_ENCRYPTION=null
         MAIL_FROM_ADDRESS=example@aaa.com
+
+PHPUnitダウンロード
+1. docker-compose exec php bash
+2. docker run --rm -v $(pwd):/app php-app composer require --dev phpunit/phpunit
 
 ## 使用技術(実行環境)
  nginx:1.21.1
